@@ -6,6 +6,10 @@ with their own subdomained version of the application.
 
 This plugin is currently work in progess. Managing subdomains still to do..
 
+# Installation
+Currently just a regular plugin:
+    rails plugin install git@github.com:mconnell/multi_tenant.git
+
 # How to Use
 Add `multi_tenant_model` to the primary model
     class Account < ActiveRecord::Base
