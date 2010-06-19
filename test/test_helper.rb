@@ -10,8 +10,8 @@ ActiveRecord::Base.establish_connection(
 )
 require 'db/load_schema'
 
-require 'multi_tenant'
-ActiveRecord::Base.send :include, MultiTenant
+require 'multi_tenant_model'
+ActiveRecord::Base.extend MultiTenantModel
 
 require 'models/account'
 require 'models/property'

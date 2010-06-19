@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class MultiTenantTest < ActiveSupport::TestCase
+class MultiTenantModelTest < ActiveSupport::TestCase
 
   def setup
     acme_account = Account.create(:name => 'Acme Housing Ltd')

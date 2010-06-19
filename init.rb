@@ -1,1 +1,1 @@
-ActiveRecord::Base.send :include, MultiTenant
+ActiveRecord::Base.extend MultiTenantModel
