@@ -61,4 +61,21 @@ class MultiTenantTest < ActiveSupport::TestCase
     assert(existing_acme_property != new_cardboard_property)
     assert_equal(new_cardboard_property.account_id, Account.current.id)
   end
+
+  [:destroy_all, :delete_all].each do |mass_deletion_method|
+    test "calling #{mass_deletion_method} when scoped to an account only applies to records within the scope" do
+      Account.current = Account.find_by_name('Cardboard Housing Ltd')
+      testee_account_id = Account.current.id
+
+      Property.send(mass_deletion_method)
+      assert_equal(0, Property.all.count)
+
+      Account.current = nil
+
+      assert_equal(2, Property.all.count)
+      Property.all.each do |property|
+        assert(property.account_id != testee_account_id)
+      end
+    end
+  end
 end
