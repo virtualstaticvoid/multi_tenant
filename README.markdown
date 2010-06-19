@@ -7,8 +7,11 @@ with their own subdomained version of the application.
 This plugin is currently work in progess. Managing subdomains still to do..
 
 # Installation
-Currently just a regular plugin:
-    rails plugin install http://github.com/mconnell/multi_tenant.git
+Currently just a regular plugin, typical plugin installation:
+    rails plugin install git://github.com/mconnell/multi_tenant.git
+
+Alternatively as a git submodule:
+    git submodule add git://github.com/mconnell/multi_tenant.git vendor/plugins/multi_tenant
 
 # How to Use
 Add `multi_tenant_model` to the primary model
