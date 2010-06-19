@@ -1,6 +1,24 @@
 require 'test_helper'
 
 class MultiTenantTest < ActiveSupport::TestCase
+
+  def setup
+    acme_account = Account.create(:name => 'Acme Housing Ltd')
+    Property.create(:name => '3 Bed House', :account_id => acme_account.id)
+    Property.create(:name => '4 Bed House', :account_id => acme_account.id)
+
+    cardboard_account = Account.create(:name => 'Cardboard Housing Ltd')
+    Property.create(:name => 'Double Layered Box',    :account_id => cardboard_account.id)
+    Property.create(:name => 'Corregated Iron Sheet', :account_id => cardboard_account.id)
+  end
+
+  def teardown
+    Account.current = nil
+    Account.delete_all
+    Property.delete_all
+  end
+
+
   test "Property.all should return all property records when the current account hasn't been set" do
     Account.current = nil
     assert_equal(4, Property.all.count)
