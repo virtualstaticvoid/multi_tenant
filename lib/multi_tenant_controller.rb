@@ -1,9 +1,15 @@
 module MultiTenantController
   def subdomain_by_multi_tenant_model(tenant = :account)
     self.class_eval do
+      cattr_accessor :tenant, :tenant_class
+    end
+
+    self.tenant_class = tenant.to_s.capitalize.constantize
+
+    self.class_eval do
       before_filter :find_account_from_subdomain
       def session
-        if @current_subdomain.present?
+        if tenant_class.current.present?
           request.session[@current_subdomain] ||= {}
         else
           request.session
@@ -11,7 +17,7 @@ module MultiTenantController
       end
 
       def session=(*args)
-        if @current_subdomain.present?
+        if tenant_class.present?
           request.session[@current_subdomain] = args
         else
           request.session = args
@@ -21,7 +27,7 @@ module MultiTenantController
       private
       def find_account_from_subdomain
         @current_subdomain = request.host.split(/\./).first
-        Account.current = Account.find_by_subdomain!(@current_subdomain)
+        tenant_class.current = tenant_class.find_by_subdomain!(@current_subdomain)
       end
     end
   end
