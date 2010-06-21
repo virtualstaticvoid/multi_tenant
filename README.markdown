@@ -14,6 +14,8 @@ Alternatively as a git submodule:
     git submodule add git://github.com/mconnell/multi_tenant.git vendor/plugins/multi_tenant
 
 # How to Use
+
+## Models
 Add `multi_tenant_model` to the primary model
     class Account < ActiveRecord::Base
       multi_tenant_model
@@ -39,5 +41,16 @@ If the current account is set, instantiating new property records will automatic
     Account.current = Account.find(25)
     Property.new
     #> <Property account_id: 25>
+
+## Controller
+If you want to have subdomained instances of the application:
+    class ApplicationController < ActionController::Base
+      subdomain_by_multi_tenant_model :account
+    end
+
+This basically tells the app to set the current account to Account.find_by_subdomain!(subdomain). Will Throw an exception if account can't be set. Every subdomain will also have an independent session.
+
+The controller aspect is currently not tested in isolating in the plugin as I haven't gotten around to working out how to generate routes in rails 3 for test controllers. They'll be extracted out of the application I'm using this plugin for eventually but you'll probably want to write some in your application..
+
 
 Copyright (c) 2010 [Mark Connell], released under the MIT license
