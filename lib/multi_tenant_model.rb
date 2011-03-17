@@ -5,7 +5,7 @@ module MultiTenantModel
     end
   end
 
-  def belongs_to_tenant(tenant = :account)
+  def belongs_to_tenant(tenant = :account, options = {})
     self.class_eval do
       cattr_accessor :tenant, :tenant_class
     end
@@ -14,7 +14,7 @@ module MultiTenantModel
     self.tenant_class ||= tenant.to_s.capitalize.constantize
 
     self.class_eval do
-      belongs_to tenant
+      belongs_to tenant, options
 
       def self.unscoped
         if tenant_class.current
